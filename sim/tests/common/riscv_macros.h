@@ -177,15 +177,29 @@ _run_test:
 //-----------------------------------------------------------------------
 
 #define RVTEST_PASS                                                     \
-        fence;                                                          \
-        mv a1, TESTNUM;                                                 \
-        li  a0, 0x0;                                                    \
-        ecall
+          fence;                                                        \
+          li a1, 0xf0000000;                                            \
+          la a2, test_pass;                                               \
+11:       lb a0, 0(a2);                                                 \
+          beq a0, x0, 22f;                                              \
+          sb a0, 0(a1);                                                 \
+          addi a2, a2, 1;                                               \
+          j 11b;                                                        \
+22:       mv a0, TESTNUM;                                               \
+          li  a0, 0x0;                                                  \
+          ecall       
 
 #define TESTNUM x28
 #define RVTEST_FAIL                                                     \
         fence;                                                          \
-        mv a1, TESTNUM;                                                 \
+        li a1, 0xf0000000;                                              \
+        la a2, test_fail;                                               \
+33:     lb a0, 0(a2);                                                   \
+        beq a0, x0, 44f;                                                \
+        sb a0, 0(a1);                                                   \
+        addi a2, a2, 1;                                                 \
+        j 33b;                                                          \
+44:     mv a1, TESTNUM;                                                 \
         li  a0, 0x1;                                                    \
         ecall
 
@@ -813,7 +827,8 @@ pass: \
 # Test data section
 #-----------------------------------------------------------------------
 
-#define TEST_DATA
-
+#define TEST_DATA 
+        test_pass: .asciz "pass\n"; 
+        test_fail: .asciz "fail\n"; 
 #endif
 
