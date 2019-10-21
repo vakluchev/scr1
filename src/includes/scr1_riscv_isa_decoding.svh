@@ -32,7 +32,8 @@ typedef enum logic [6:2] {
     SCR1_OPCODE_BRANCH      = 5'b11000,
     SCR1_OPCODE_JALR        = 5'b11001,
     SCR1_OPCODE_JAL         = 5'b11011,
-    SCR1_OPCODE_SYSTEM      = 5'b11100
+    SCR1_OPCODE_SYSTEM      = 5'b11100,
+    SCR1_OPCODE_ADDIPC      = 5'b11101
 } type_scr1_rvi_opcode_e;
 
 

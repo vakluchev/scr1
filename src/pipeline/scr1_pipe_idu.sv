@@ -446,6 +446,15 @@ always_comb begin
                         endcase // funct3
                     end // SCR1_OPCODE_SYSTEM
 
+                    SCR1_OPCODE_ADDIPC           : begin
+                        idu2exu_use_rd          = 1'b1;
+                        idu2exu_use_imm         = 1'b1;
+                        idu2exu_cmd.sum2_op     = SCR1_SUM2_OP_PC_IMM;
+                        idu2exu_cmd.rd_wb_sel   = SCR1_RD_WB_SUM2;
+                        idu2exu_cmd.imm         = {{12{instr[31]}},instr[31:12]};
+
+                    end // SCR1_OPCODE_ADDIPC
+
                     default : begin
                         rvi_illegal = 1'b1;
                     end
